@@ -32,7 +32,7 @@ func (self *BranchInstruction) FetchOperands(reader *ByteCodeReader) {
 给出局部变量表索引
 */
 type Index8Instruction struct {
-	//局部变量表索引
+	//局部变量表索引，不是uint8的原因是，有可能会被扩展成uint16
 	Index uint
 }
 

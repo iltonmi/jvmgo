@@ -3,7 +3,7 @@ package loads
 import "../base"
 import "../../rtda"
 
-type ILOAD struct{ base.Index8Instruction } //todo 这里为什么局部变量表的所以最多8位
+type ILOAD struct{ base.Index8Instruction } //对大部分方法，局部变量表大小都不会超过256，因此用一个字节
 type ILOAD_0 struct{ base.NoOperandsInstruction }
 type ILOAD_1 struct{ base.NoOperandsInstruction }
 type ILOAD_2 struct{ base.NoOperandsInstruction }

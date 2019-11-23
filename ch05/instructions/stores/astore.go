@@ -1,4 +1,4 @@
-package loads
+package stores
 
 import "../base"
 import "../../rtda"
