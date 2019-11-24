@@ -79,5 +79,5 @@ func (self *LCONST_0) Execute(frame *rtda.Frame) {
 }
 
 func (self *LCONST_1) Execute(frame *rtda.Frame) {
-	frame.OperandStack().PushInt(1)
+	frame.OperandStack().PushLong(1)
 }

@@ -15,3 +15,35 @@ func newInterfaceMethodRef(cp *ConstantPool, refInfo *classfile.ConstantInterfac
 	ref.copyMemberRefInfo(&refInfo.ConstantMemberRefInfo)
 	return ref
 }
+
+func (imr *InterfaceMethodRef) ResolvedInterfaceMethod() *Method {
+	if imr.method == nil {
+		imr.resolveInterfaceMethodRef()
+	}
+	return imr.method
+}
+
+func (imr *InterfaceMethodRef) resolveInterfaceMethodRef() {
+	currIface := imr.cp.class
+	c := imr.ResolvedClass()
+	if !c.IsInterface() {
+		panic("java.lang.IncompatibleClassChangeError")
+	}
+	method := lookUpInterfaceMethod(c, imr.name, imr.descriptor)
+	if method == nil {
+		panic("java.lang.NoSuchMethodError")
+	}
+	if !method.isAccessibleTo(currIface) {
+		panic("java.lang.IllegalAccessError")
+	}
+	imr.method = method
+}
+
+func lookUpInterfaceMethod(class *Class, name, descriptor string) *Method {
+	for _, method := range class.methods {
+		if method.name == name && method.descriptor == descriptor {
+			return method
+		}
+	}
+	return LookUpMethodInInterfaces(class.interfaces, name, descriptor)
+}
