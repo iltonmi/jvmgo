@@ -3,17 +3,54 @@ package heap
 // jvms8 6.5.instanceof
 // jvms8 6.5.checkcast
 func (self *Class) isAssignableFrom(other *Class) bool {
-	s, t := other, self
+	varClass, assignedToClass := other, self
 
-	if s == t {
+	if varClass == assignedToClass {
 		return true
 	}
 
-	if !t.IsInterface() {
-		return s.IsSubClassOf(t)
+	if !varClass.IsArray() {
+		if !varClass.IsInterface() {
+			if !assignedToClass.IsInterface() {
+				// both are not type of array or interface
+				varClass.IsSubClassOf(assignedToClass)
+			} else {
+				// varClass is not type of array or interface, assignedToClass is interface type
+				varClass.isSubInterfaceOf(assignedToClass)
+			}
+		} else {
+			if !assignedToClass.IsInterface() {
+				// varClass is interface type, assignedToClass is not interface type or array type
+				//result depends on whether assignedToClass is type of java.lang.Object
+				return assignedToClass.isJlObject()
+			} else {
+				// both are interface type
+				return assignedToClass.isSubInterfaceOf(varClass)
+			}
+		}
 	} else {
-		return s.IsImplements(t)
+		if !assignedToClass.IsArray() {
+			if !assignedToClass.IsInterface() {
+				// varClass is array, assignedToClass is not interface type or array type
+				//result depends on whether assignedToClass is type of java.lang.Object
+				return assignedToClass.isJlObject()
+			} else {
+				// both are interface type
+				//result depends on whether assignedToClass is type of
+				// java.lang.Cloneable or java.io.Serializable
+				return assignedToClass.isJlCloneable() || assignedToClass.isJioSerializable()
+			}
+		} else {
+			// both are array
+			//result depends on
+			//1. both are same primitive type
+			//2. both are reference type and varArrComponent can be converted to assignedToArrComponent
+			varArrComponent := varClass.ComponentClass()
+			assignedToArrComponent := assignedToClass.ComponentClass()
+			return varArrComponent == assignedToArrComponent || assignedToArrComponent.isAssignableFrom(varArrComponent)
+		}
 	}
+	return false
 }
 
 // self extends c
