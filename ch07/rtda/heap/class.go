@@ -24,6 +24,7 @@ type Class struct {
 	instanceSlotCount uint
 	staticSlotCount   uint
 	staticVars        Slots
+	initStarted       bool
 }
 
 /**
@@ -120,4 +121,12 @@ func (self *Class) getStaticMethod(name, descriptor string) *Method {
 
 func (self *Class) NewObject() *Object {
 	return newObject(self)
+}
+
+func (self *Class) InitSatated() bool {
+	return self.initStarted
+}
+
+func (self *Class) StartInit() {
+	self.initStarted = true
 }

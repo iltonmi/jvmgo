@@ -37,3 +37,7 @@ func (self *Frame) OperandStack() *OperandStack {
 func (self *Frame) Method() *heap.Method {
 	return self.method
 }
+
+func (self *Frame) RevertNextPC() {
+	self.nextPC = self.thread.pc
+}
