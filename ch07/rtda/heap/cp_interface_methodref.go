@@ -39,11 +39,11 @@ func (imr *InterfaceMethodRef) resolveInterfaceMethodRef() {
 	imr.method = method
 }
 
-func lookUpInterfaceMethod(class *Class, name, descriptor string) *Method {
-	for _, method := range class.methods {
+func lookUpInterfaceMethod(iface *Class, name, descriptor string) *Method {
+	for _, method := range iface.methods {
 		if method.name == name && method.descriptor == descriptor {
 			return method
 		}
 	}
-	return LookUpMethodInInterfaces(class.interfaces, name, descriptor)
+	return LookUpMethodInInterfaces(iface.interfaces, name, descriptor)
 }

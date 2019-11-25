@@ -22,6 +22,10 @@ func InvokeMethod(invokerFrame *rtda.Frame, method *heap.Method) {
 	if method.IsNative() {
 		if method.Name() == "registerNatives" {
 			thread.PopFrame()
+		} else if method.Name() == "currentTimeMillis" {
+			thread.PopFrame()
+			thread.PopFrame()
+			thread.PopFrame()
 		} else {
 			panic(fmt.Sprintf("native method: %v.%v%v\n",
 				method.Class().Name(), method.Name(), method.Descriptor()))

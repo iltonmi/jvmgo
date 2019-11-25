@@ -35,10 +35,12 @@ func loop(thread *rtda.Thread, logInst bool) {
 			logInstruction(frame, inst)
 		}
 		//execute
-		//fmt.Printf("current method:" + frame.Method().Name() + "\n")
-		//fmt.Printf("local variable table before execute: %v\n", frame.LocalVars())
-		//fmt.Printf("operand stack before execute: %v\n", frame.OperandStack())
-		//fmt.Printf("pc:%2d inst:%T %v\n", pc, inst, inst)
+		//if frame.Method().Name() != "fibonacci" {
+		//	fmt.Printf("current method:" + frame.Method().Name() + "\n")
+		//	fmt.Printf("local variable table before execute: %v\n", frame.LocalVars())
+		//	fmt.Printf("operand stack before execute: %v\n", frame.OperandStack())
+		//	fmt.Printf("pc:%2d inst:%T %v\n", pc, inst, inst)
+		//}
 		inst.Execute(frame)
 		if thread.IsStackEmpty() {
 			break

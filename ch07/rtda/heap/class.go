@@ -123,7 +123,7 @@ func (self *Class) NewObject() *Object {
 	return newObject(self)
 }
 
-func (self *Class) InitSatated() bool {
+func (self *Class) InitStarted() bool {
 	return self.initStarted
 }
 

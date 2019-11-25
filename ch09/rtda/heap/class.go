@@ -25,6 +25,7 @@ type Class struct {
 	staticSlotCount   uint
 	staticVars        Slots
 	initStarted       bool
+	jClass            *Object //java.lang.Class实例
 }
 
 /**

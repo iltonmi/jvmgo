@@ -2,7 +2,7 @@
   <configuration default="false" name="go build ch08/" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
     <module name="jvmgo" />
     <working_directory value="$PROJECT_DIR$/" />
-    <parameters value="-cp D:\documents\java-files\jvmgo\out\production\jvmgo\com\linweili -Xjre D:\Downloads\rtjar\rtjar ClassFileTest" />
+    <parameters value="-cp D:\documents\java-files\jvmgo\out\production\jvmgo\com\linweili -Xjre D:\Downloads\rtjar\rtjar HelloWorld" />
     <kind value="DIRECTORY" />
     <directory value="$PROJECT_DIR$/ch08" />
     <method v="2" />

@@ -2,8 +2,8 @@ package heap
 
 //todo 找到的方法万一是抽象方法怎么办,这和接口方法同理
 func LookUpMethodInClass(class *Class, name, descriptor string) *Method {
-	for c := class; c != nil; c = class.superClass {
-		for _, method := range class.methods {
+	for c := class; c != nil; c = c.superClass {
+		for _, method := range c.methods {
 			if method.name == name && method.descriptor == descriptor {
 				return method
 			}
