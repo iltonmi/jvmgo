@@ -32,9 +32,9 @@ func (self *ByteCodeReader) ReadInt8() int8 {
 }
 
 func (self *ByteCodeReader) ReadUInt16() uint16 {
-	byte1 := uint16(self.ReadInt8())
-	byte2 := uint16(self.ReadInt8())
-	return byte1<<8 | byte2
+	byte1 := uint16(self.ReadUInt8())
+	byte2 := uint16(self.ReadUInt8())
+	return (byte1 << 8) | byte2
 }
 
 func (self *ByteCodeReader) ReadInt16() int16 {
@@ -42,11 +42,11 @@ func (self *ByteCodeReader) ReadInt16() int16 {
 }
 
 func (self *ByteCodeReader) ReadInt32() int32 {
-	byte1 := int32(self.ReadInt8())
-	byte2 := int32(self.ReadInt8())
-	byte3 := int32(self.ReadInt8())
-	byte4 := int32(self.ReadInt8())
-	return byte1<<24 | byte2<<16 | byte3<<8 | byte4
+	byte1 := int32(self.ReadUInt8())
+	byte2 := int32(self.ReadUInt8())
+	byte3 := int32(self.ReadUInt8())
+	byte4 := int32(self.ReadUInt8())
+	return (byte1 << 24) | (byte2 << 16) | (byte3 << 8) | byte4
 }
 
 func (self *ByteCodeReader) ReadInt32s(n int32) []int32 {

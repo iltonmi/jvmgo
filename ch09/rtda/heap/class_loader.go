@@ -19,13 +19,27 @@ func NewClassLoader(cp *classpath.Classpath, verboseFlag bool) *ClassLoader {
 		classMap:    make(map[string]*Class),
 	}
 	loader.loadBasicClasses()
-	//loader.loadPrimitiveClasses()
+	loader.loadPrimitiveClasses()
 	return loader
 }
 
-//func (c *ClassLoader) loadPrimitiveClasses() {
-//	for primitiveType, _ := range primitiveTypes
-//}
+func (c *ClassLoader) loadPrimitiveClasses() {
+	for primitiveType, _ := range primitiveTypes {
+		c.loadPrimitiveClass(primitiveType)
+	}
+}
+
+func (c *ClassLoader) loadPrimitiveClass(className string) {
+	class := &Class{
+		accessFlags: ACC_PUBLIC,
+		name:        className,
+		loader:      c,
+		initStarted: true,
+	}
+	class.jClass = c.classMap["java/lang/Class"].NewObject()
+	class.jClass.extra = class
+	c.classMap[className] = class
+}
 
 func (c *ClassLoader) loadBasicClasses() {
 	//加载java.lang.Class类, 触发java.lang.Object等类和接口的加载

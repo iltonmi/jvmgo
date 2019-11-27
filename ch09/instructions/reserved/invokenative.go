@@ -2,6 +2,8 @@ package reserved
 
 import (
 	"../../native"
+	_ "../../native/java/lang"
+	_ "../../native/sun/misc"
 	"../../rtda"
 	"../base"
 )
