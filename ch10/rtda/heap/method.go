@@ -6,10 +6,12 @@ import (
 
 type Method struct {
 	ClassMember
-	maxStack     uint
-	maxLocals    uint
-	code         []byte
-	argSlotCount uint
+	maxStack        uint
+	maxLocals       uint
+	code            []byte
+	argSlotCount    uint
+	exceptionTable  ExceptionTable
+	lineNumberTable *classfile.LineNumberTableAttribute
 }
 
 func newMethods(class *Class, cfMethods []*classfile.MemberInfo) []*Method {
@@ -59,7 +61,28 @@ func (self *Method) copyAttributes(cfMethod *classfile.MemberInfo) {
 		self.maxStack = codeAttr.MaxStack()
 		self.maxLocals = codeAttr.MaxLocals()
 		self.code = codeAttr.Code()
+		self.lineNumberTable = codeAttr.LineNumberTableAttribute()
+		self.exceptionTable = newExceptionTable(codeAttr.ExceptionTable(),
+			self.class.constantPool)
 	}
+}
+
+func (self *Method) GetLineNumber(pc int) int {
+	if self.IsNative() {
+		return -2
+	}
+	if self.lineNumberTable == nil {
+		return -1
+	}
+	return self.lineNumberTable.GetLineNumber(pc)
+}
+
+func (self *Method) FindExceptionHandler(exClass *Class, pc int) int {
+	handler := self.exceptionTable.findExceptionHandler(exClass, pc)
+	if handler != nil {
+		return handler.handlerPc
+	}
+	return -1
 }
 
 func (self *Method) calcArgSlotCount(paramTypes []string) {

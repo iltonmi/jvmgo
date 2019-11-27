@@ -26,6 +26,7 @@ type Class struct {
 	staticVars        Slots
 	initStarted       bool
 	jClass            *Object //java.lang.Class实例
+	sourceFile        string
 }
 
 /**
@@ -40,6 +41,7 @@ func newClass(cf *classfile.ClassFile) *Class {
 	class.constantPool = newConstantPool(class, cf.ConstantPool())
 	class.fields = newFields(class, cf.Fields())
 	class.methods = newMethods(class, cf.Methods())
+	class.sourceFile = getSourceFile(cf)
 	return class
 }
 
@@ -202,4 +204,16 @@ func (self *Class) GetRefVar(fieldName, fieldDescriptor string) *Object {
 func (self *Class) SetRefVar(fieldName, fieldDescriptor string, ref *Object) {
 	field := self.getField(fieldName, fieldDescriptor, true)
 	self.staticVars.SetRef(field.slotId, ref)
+}
+
+//不是每个class文件都有源文件信息
+func getSourceFile(cf *classfile.ClassFile) string {
+	if sfAttr := cf.SourceFileAttribute(); sfAttr != nil {
+		return sfAttr.FileName()
+	}
+	return "Unknown"
+}
+
+func (self *Class) SourceFile() string {
+	return self.sourceFile
 }

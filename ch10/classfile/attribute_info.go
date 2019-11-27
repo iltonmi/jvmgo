@@ -47,7 +47,7 @@ func newAttributeInfo(attrName string, attrLen uint32, cp ConstantPool) Attribut
 	case "LocalVariableTable":
 		return &LocalVariableTableAttribute{}
 	case "SourceFile":
-		return &SourceFileAttribute{}
+		return &SourceFileAttribute{cp: cp}
 	case "Synthetic":
 		return &SyntheticAttribute{}
 	default:
